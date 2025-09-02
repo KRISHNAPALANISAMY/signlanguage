@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hello Flask</title>
-    <!-- link CSS file -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Hello, World! 🌍</h1>
-        <p>This is a simple Flask app with HTML + CSS.</p>
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <h1>Welcome to Flask 🌍</h1>
+    <p>This is the Home Page.</p>
+{% endblock %}
