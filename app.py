@@ -72,6 +72,8 @@ def index():
     users = User.query.all()
     return render_template("index.html", users=users)
 
+from sqlalchemy.exc import IntegrityError  # Make sure this import is at the top
+
 @app.route("/add", methods=["POST"])
 def add_user():
     name = request.form.get("name")
@@ -83,10 +85,17 @@ def add_user():
 
     user = User(name=name, email=email)
     db.session.add(user)
-    db.session.commit()
-    save_to_excel()
-    flash("Student added successfully", "success")
+
+    try:
+        db.session.commit()
+        save_to_excel()
+        flash("Student added successfully", "success")
+    except IntegrityError:
+        db.session.rollback()
+        flash("Email already exists!", "danger")  # Alert for duplicate email
+
     return redirect(url_for("index"))
+
 
 @app.route("/delete/<int:id>")
 def delete_user(id):
